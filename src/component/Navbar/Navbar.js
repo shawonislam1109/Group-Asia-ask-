@@ -5,8 +5,20 @@ const Navbar = () => {
   const { user, LogOUt } = useContext(AuthContext);
   const itemMenu = (
     <React.Fragment>
-      <li className="font-serif">
+      <li className="font-bold">
         <Link to="/">Home</Link>
+      </li>
+      <li className="font-bold">
+        <Link to="/emmployessApply">Employe Apply </Link>
+      </li>
+      <li className="font-bold">
+        <Link to="/createEmployees">Create Employees </Link>
+      </li>
+      <li className="font-bold">
+        <Link to="/myapply">My Apply </Link>
+      </li>
+      <li className="font-bold">
+        <Link to="/allapply">All Apply </Link>
       </li>
     </React.Fragment>
   );

@@ -4,32 +4,53 @@ import Main from "./Layout/Main";
 import Login from "./component/Login/Login";
 import SignUp from "./component/signUp/SignUp";
 import Home from "./Page/Home/Home";
+import MyApply from "./Page/MyApply/MyApply";
+import Apply from "./Page/Apply/Apply";
+import AllApply from "./Page/AllApply/AllApply";
+import CrateEmployList from "./Page/CrateApplyLisst/CrateEmployList";
 
-function App() {
+function App()
+{
   const route = createBrowserRouter([
     {
-      path : '/',
-      element: <Main/>, 
+      path: '/',
+      element: <Main />,
       children: [
         {
-          path : '/',
-          element: <Home/>
+          path: '/',
+          element: <Home />
         }
         ,
         {
           path: '/login',
-          element: <Login/>,
+          element: <Login />,
         },
         {
           path: '/signup',
-          element: <SignUp/>,
+          element: <SignUp />,
+        },
+        {
+          path: '/myapply',
+          element: <MyApply/>
+        },
+        {
+          path: '/emmployessApply',
+          element: <Apply/>
+        },
+        {
+          path: '/allapply',
+          element: <AllApply/>
+        },
+        {
+          path: '/createEmployees',
+          element: <CrateEmployList/>
         }
       ]
     }
-  ]) ;  
+  ]);
   return (
     <div>
-       <RouterProvider router={route}></RouterProvider>
+      <RouterProvider router={ route }></RouterProvider>
     </div>
   );
 }
