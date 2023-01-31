@@ -8,9 +8,18 @@ import MyApply from "./Page/MyApply/MyApply";
 import Apply from "./Page/Apply/Apply";
 import AllApply from "./Page/AllApply/AllApply";
 import CrateEmployList from "./Page/CrateApplyLisst/CrateEmployList";
+import
+  {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    QueryClient,
+    QueryClientProvider,
+  } from '@tanstack/react-query'
 
 function App()
 {
+  const queryClient = new QueryClient()
   const route = createBrowserRouter([
     {
       path: '/',
@@ -31,26 +40,28 @@ function App()
         },
         {
           path: '/myapply',
-          element: <MyApply/>
+          element: <MyApply />
         },
         {
           path: '/emmployessApply',
-          element: <Apply/>
+          element: <Apply />
         },
         {
           path: '/allapply',
-          element: <AllApply/>
+          element: <AllApply />
         },
         {
           path: '/createEmployees',
-          element: <CrateEmployList/>
+          element: <CrateEmployList />
         }
       ]
     }
   ]);
   return (
     <div>
-      <RouterProvider router={ route }></RouterProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={ route }></RouterProvider>
+      </QueryClientProvider>
     </div>
   );
 }
