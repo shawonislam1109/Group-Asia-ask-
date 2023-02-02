@@ -7,6 +7,7 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const SignUp = () => {
   const { createUser, updateUser, GoogleSingIn } = useContext(AuthContext);
+  const imgbbHostKey = process.env.REACT_APP_imgbbKey ; 
 
   const googleProvider = new GoogleAuthProvider();
   const {
@@ -21,21 +22,38 @@ const SignUp = () => {
   const from = location.state?.from?.pathname || "/";
 
   const signUpSubmit = (data) => {
-    const info = {
-      displayName: data.name,
-    };
-    createUser(data.email, data.password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        updateUser(info);
-        Navigate(from, { replace: true });
-        setError("");
+    const image = data.image[0]
+    const fromData = new FormData() ;
+      fromData.append('image', image)
+
+
+        //  img Uupload in imgBB 
+
+      fetch(`https://api.imgbb.com/1/upload?key=${imgbbHostKey}`, {
+        method: "POST",
+        body: fromData 
       })
-      .catch((error) => {
-        setError(error.message);
-        console.log(error);
-      });
+      .then(res => res.json()) 
+      .then(imageDATA => {
+        const info = {
+          displayName: data.name,
+          photoURL : imageDATA?.data?.url 
+        }
+        createUser(data.email, data.password)
+        .then((result) => {
+          const user = result.user;
+          console.log(user) ; 
+          console.log(user);
+          updateUser(info);
+          Navigate(from, { replace: true });
+          setError("");
+        })
+        .catch((error) => {
+          setError(error.message);
+          console.log(error);
+        });
+      })
+   
   };
 
   const googleWithSign = () => {
@@ -74,6 +92,22 @@ const SignUp = () => {
               </p>
             )}
           </div>
+          <div className="form-control w-full   max-w-xs">
+            <label className="label">
+              <span className="label-text font-bold text-violet-500">Image Upload</span>
+            </label>
+            <input
+              {...register("image", { required: "Image Upload is required" })}
+              type="file"
+              placeholder="Upload Image"
+              className="input input-bordered pt-2 w-full max-w-xs"
+            />
+            {errors.image && (
+              <p role="alert" className="text-red-500">
+                {errors.image?.message}
+              </p>
+            )}
+          </div>
 
           <div className="form-control w-full   max-w-xs">
             <label className="label">
@@ -83,7 +117,7 @@ const SignUp = () => {
             </label>
             <input
               {...register("email", { required: "Email Address is required" })}
-              type="text"
+              type="email"
               placeholder="Your email"
               className="input input-bordered w-full max-w-xs"
             />
@@ -93,6 +127,7 @@ const SignUp = () => {
               </p>
             )}
           </div>
+
           <div className="form-control w-full   max-w-xs">
             <label className="label">
               <span className="label-text font-bold text-violet-500">
@@ -125,6 +160,7 @@ const SignUp = () => {
               </p>
             )}
           </div>
+
           <div>{error && <p className="text-red-500">{error}</p>}</div>
           <input
             className="w-full font-bold bg-violet-700 hover:bg-violet-900 cursor-pointer mt-2 text-white text-center p-3 rounded-lg"
