@@ -10,7 +10,7 @@ const Home = () =>
     const { user } = useContext(AuthContext)
     const [ checking, setChecking ] = useState(false)
     const { register, formState: { errors }, handleSubmit, reset } = useForm();
-    const imgbbHostKey = process.env.REACT_APP_imgbbKey
+    const imgbbHostKey = process.env.REACT_APP_imgbbKey ; 
 
     const sweetAlert = () =>
     {
@@ -27,17 +27,19 @@ const Home = () =>
        const image = data.image[0] ; 
       const fromData = new FormData() ;
       fromData.append('image', image)
+
+
         //  img Uupload in imgBB 
 
-      const uri = `https://api.imgbb.com/1/upload?key=${imgbbHostKey}`;
-      fetch(uri, {
+      fetch(`https://api.imgbb.com/1/upload?key=${imgbbHostKey}`, {
         method: "POST",
         body: fromData 
       })
       .then(res => res.json())
       .then(imgData => {
+        console.log(imgData)
         const employe = {
-            image : imgData.data.url ,
+            image : imgData?.data?.url ,
             email : data.email ,
             name : data.name ,
             date : data.date ,
@@ -45,7 +47,7 @@ const Home = () =>
         }
         // create emmploy insert data in DB
 
-        fetch('http://localhost:5000/createEmployes',{
+        fetch('http://localhost:5000/createEmploye',{
             method: 'POST',
             headers: {
                 'content-type' : 'application/json'
@@ -173,12 +175,7 @@ const Home = () =>
                                                 value='Save' type="submit">Create Employe</button></>
                                         :
                                         <>
-                                            <button disabled className='w-full  font-bold 
-                                             bg-violet-700 hover:bg-violet-900        
-                                               cursor-not-allowed mt-7 text-white       
-                                                text-center p-3 
-                                               rounded-lg' value='Save'
-                                                type="submit">Create Employe</button>
+                                        
                                         </>
                                 }
                             </div>

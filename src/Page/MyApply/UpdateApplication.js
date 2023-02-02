@@ -2,10 +2,12 @@ import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { AuthContext } from '../../AuthProvider/AuthProvider';
+import { Navigate, useLoaderData } from 'react-router-dom';
 
-
-const Apply = () =>
+const UpdateApplication = ( ) =>
 {
+    const updateData = useLoaderData() ; 
+    console.log(updateData) ; 
     const { user } = useContext(AuthContext)
     const [ checking, setChecking ] = useState(false)
     const { register, formState: { errors }, handleSubmit, reset } = useForm();
@@ -21,54 +23,63 @@ const Apply = () =>
     }
 
 
-    const addTaskSubmit = (data) =>
+    const UpdateApply = (datas) =>
     {
-       
-        const employe = {
-            
-            email : user.email ,
-            name : user.displayName ,
-            date : data.date ,
-            image : user.photoURL ,
-            application : data.textarea,
+
+        const updateEmpolyes = {
+
+            email: user.email,
+            name: user.displayName,
+            date: datas.date,
+            image: user.photoURL,
+            application: datas.textarea,
 
         }
-        //  emmploy apply  insert data in DB
-        fetch('http://localhost:5000/application',{
-            method: 'POST',
+
+        console.log(updateEmpolyes);
+
+        //  emmploy apply  update  data in DB
+
+
+        fetch(`http://localhost:5000/updateapplication/${updateData._id }`, {
+            method: "PUT",
             headers: {
-                'content-type' : 'application/json'
+                'content-type': 'application/json'
             },
-            body: JSON.stringify(employe)
+            body: JSON.stringify(updateEmpolyes)
         })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            sweetAlert() ; 
-            reset() ; 
-        })
-  
+            .then(res => res.json())
+            .then(data =>
+            {
+                console.log(data)
+                sweetAlert();
+                reset();
+                Navigate('/myapply')
+            })
+
+
     }
     const CheckBox = (data) =>
     {
         setChecking(data.target.checked)
     }
     return (
-        <div className='mx-3 md:mx-0 '>
-            <div className=' background relative  py-16 rounded-lg shadow-2xl  md:w-2/3   
-             mx-auto px-10  my-28'>
-                <div className='md:w-9/12 mx-auto px-10 md:px-0 mb-10'>
+        <div>
+
+
+            <div className=' background relative  py-9 md:w-9/12 mx-auto mt-20 rounded-lg shadow-xl '>
+                <div className='md:w-9/12 mx-auto'>
                     <div className='flex justify-center items-center'>
-        <img className=' border-4 border-violet-600 w-28 h-28 md:w-40   
-                          md:h-40 rounded-full absolute md:-top-20 -top-12' 
-    src='https://cdn-icons-png.flaticon.com/512/1484/1484799.png' alt="" />
-                        <h1 className='text-center text-2xl md:text-3xl mt-10 font-bold'>   
-                          <span className='text-vilolet-500'>Employe Apply</span> Application</h1>
+                        <img className=' border-4 border-violet-600 w-16 h-16 rounded-full absolute      
+          md:-top-20 -top-12'
+                            src='https://cdn-icons-png.flaticon.com/512/1484/1484799.png' alt="" />
+                        <h1 className='text-center  text-xl mt-10 font-bold'>
+                            <span className='text-vilolet-500'>Update </span> Apply</h1>
                     </div>
 
-                    <div className='flex justify-center items-center'>
-                        <form className='md:w-2/3' onSubmit={ handleSubmit(addTaskSubmit) }>
-                            <div className="form-control w-full   ">
+                    <div className='flex justify-center  items-center '>
+                        <form className='md:w-2/3' onSubmit={ handleSubmit(UpdateApply) }>
+                            <div className="form-control w-full ">
                                 <label className="label">
                                     <span className="label-text text-xl  font-bold text- 
                                      violet-500">Date</span>
@@ -76,23 +87,23 @@ const Apply = () =>
                                 <input { ...register("date",
                                     { required: 'This  is required' }
                                 ) } type="datetime-local" placeholder="Your email" className="input 
-                                 input-bordered input-secondary w-full text-xl" />
+                                 input-bordered input-secondary w-64 md:w-full text-xl" />
                                 {
                                     errors.date && <p role='alert' className='text-red-500 
                                      text-xl mt-3'>{ errors.date?.message }</p>
                                 }
                             </div>
-                    
+
 
                             <div className="form-control w-full   ">
                                 <label className="label">
                                     <span className="label-text text-xl  font-bold text- 
                                      violet-500">
-                                     Application</span>
+                                        Application</span>
                                 </label>
                                 <textarea { ...register('textarea',
                                     { required: 'This is required field' }
-                                ) } placeholder='emmployees Application write  ' className='rounded-xl pl-5 text-xl pt-2' rows="10" cols="20"></textarea>
+                                ) } placeholder='emmployees Application write  ' className='rounded-md pl-5 text-md pt-2' rows="10" cols="20"></textarea>
                                 {
                                     errors.textarea && <p role='alert' className='text-red-500 
                                      text-xl mt-3'>{ errors.textarea?.message }</p>
@@ -117,10 +128,10 @@ const Apply = () =>
                                         <>
                                             <button className='w-full  font-bold bg-violet-900 cursor-pointer mt-7 
                                               text-white text-center p-3 rounded-lg'
-                                                value='Save' type="submit">Create Employe</button></>
+                                                value='Save' type="submit">Update Apply</button></>
                                         :
                                         <>
-                                           
+
                                         </>
                                 }
                             </div>
@@ -129,7 +140,8 @@ const Apply = () =>
                 </div>
             </div>
         </div>
-    );
-};
 
-export default Apply;
+    );
+}
+
+export default UpdateApplication;

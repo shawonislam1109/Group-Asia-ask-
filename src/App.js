@@ -16,6 +16,7 @@ import
     QueryClient,
     QueryClientProvider,
   } from '@tanstack/react-query'
+import UpdateApplication from "./Page/MyApply/UpdateApplication";
 
 function App()
 {
@@ -53,6 +54,11 @@ function App()
         {
           path: '/createEmployees',
           element: <CrateEmployList />
+        },
+        {
+          path: '/updateApplication/:id',
+          element: <UpdateApplication/>,
+          loader:  ({params}) => fetch(`http://localhost:5000/application/${params.id}`) 
         }
       ]
     }
