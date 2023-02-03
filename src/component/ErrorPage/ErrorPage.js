@@ -3,7 +3,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import errorPage from './404page.png'
 
-const ErrorPage = () => {
+const PageError = () => {
     return (
         <div>
             <div className='flex flex-col min-h-[700px] justify-center items-center'>
@@ -22,4 +22,4 @@ const ErrorPage = () => {
     );
 };
 
-export default ErrorPage;
+export default PageError;

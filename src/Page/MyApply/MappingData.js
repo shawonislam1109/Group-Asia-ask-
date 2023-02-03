@@ -36,7 +36,7 @@ const MappingData = ({ data, refetch }) =>
     return (
         <div>
             <div className='flex justify-center items-center'>
-                <div className="card card-side  mt-8 bg-slate-200  shadow-xl">
+                <div className="card card-side w-9/12 mt-8 bg-slate-200  shadow-xl">
                     <div className="card-body">
                         <div><img className='md:w-16 md:h-16  w-12 h-12 rounded-full' src={ image } alt="Movie" /></div>
                         <h2 className="card-title">{ name }</h2>

@@ -17,6 +17,9 @@ import
     QueryClientProvider,
   } from '@tanstack/react-query'
 import UpdateApplication from "./Page/MyApply/UpdateApplication";
+import PageError from "./component/ErrorPage/ErrorPage";
+import Approve from "./Page/AllApply/Approve";
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 function App()
 {
@@ -25,10 +28,11 @@ function App()
     {
       path: '/',
       element: <Main />,
+      errorElement: <PageError/>,
       children: [
         {
           path: '/',
-          element: <Home />
+          element: <PrivateRoute><Home /></PrivateRoute>
         }
         ,
         {
@@ -41,24 +45,29 @@ function App()
         },
         {
           path: '/myapply',
-          element: <MyApply />
+          element: <PrivateRoute><MyApply /></PrivateRoute>
         },
         {
           path: '/emmployessApply',
-          element: <Apply />
+          element: <PrivateRoute><Apply /></PrivateRoute>
         },
         {
           path: '/allapply',
-          element: <AllApply />
+          element: <PrivateRoute><AllApply /></PrivateRoute>
         },
         {
           path: '/createEmployees',
-          element: <CrateEmployList />
+          element: <PrivateRoute><CrateEmployList /></PrivateRoute>
         },
         {
           path: '/updateApplication/:id',
-          element: <UpdateApplication/>,
+          element: <PrivateRoute><UpdateApplication/></PrivateRoute>,
           loader:  ({params}) => fetch(`http://localhost:5000/application/${params.id}`) 
+        },
+        {
+          path: '/approve/:id',
+          element: <PrivateRoute><Approve/></PrivateRoute>,
+          loader:  ({params}) => fetch(`http://localhost:5000/application/${params.id}`)
         }
       ]
     }
