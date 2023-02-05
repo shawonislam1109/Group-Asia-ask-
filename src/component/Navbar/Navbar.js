@@ -1,9 +1,20 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
 const Navbar = () => {
   const { user, LogOUt } = useContext(AuthContext);
+  const {data: adminData, } = useQuery({
+    queryKey : ['admin'],
+    queryFn : async () => {
+      const res = await fetch('http://localhost:5000/admin')
+      const data = res.json() ; 
+      return data
+    }
+  })
   const itemMenu = (
+
+  
     <React.Fragment>
       <li className="font-bold">
         <Link to="/">Home</Link>
@@ -22,6 +33,19 @@ const Navbar = () => {
       </li>
     </React.Fragment>
   );
+  const itemMenu2 = (
+    <React.Fragment>
+      
+      <li className="font-bold">
+        <Link to="/emmployessApply">Employe Apply </Link>
+      </li>
+   
+      <li className="font-bold">
+        <Link to="/myapply">My Apply </Link>
+      </li>
+    
+    </React.Fragment>
+  )
   const logingOUt = () => {
     LogOUt()
       .then((result) => { })
@@ -52,7 +76,9 @@ const Navbar = () => {
               tabIndex={ 0 }
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
             >
-              { itemMenu }
+              {
+                user?.email === "pk20@gmail.com" ? <>{ itemMenu }</> : <>{itemMenu2}</>
+              }
             </ul>
           </div>
           <Link to="/" className="btn btn-ghost normal-case text-xl">
@@ -60,7 +86,13 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{ itemMenu }</ul>
+          <ul className="menu menu-horizontal px-1">
+            
+            
+            {
+                user?.email === "pk20@gmail.com" ? <>{ itemMenu }</> : <>{itemMenu2}</>
+              }
+            </ul>
         </div>
         <div className="navbar-end">
           <div className=" ">
