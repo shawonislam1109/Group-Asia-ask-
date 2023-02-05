@@ -4,7 +4,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 const ApplyingMaping = ({ applyData, refetch }) =>
 {
-    const { image, email, date, application, name, _id } = applyData;
+    const { image, email, date, application, name, _id,approve } = applyData;
     const sweetAlert = () =>
     {
         Swal.fire(
@@ -41,7 +41,20 @@ const ApplyingMaping = ({ applyData, refetch }) =>
                     <p>Email : { email }</p>
                     <p className='mt-5 ml-2'>Application : { application }</p>
                     <div className="card-actions justify-end">
-                        <Link to={`/approve/${_id}`}><button className="btn-sm rounded-md btn-primary">Approve</button></Link>
+                        {
+                            approve ? 
+                            <>
+                            <button  className='btn-sm rounded-md btn-primary'>
+                                Done
+                            </button>
+                            </> 
+                            
+                            : 
+                            
+                            <>
+                        <Link to={`/approve/${_id}`}><button  className="btn-sm rounded-md btn-primary">Approve</button></Link>
+                            </>
+                        }
                         <button onClick={ () => cancelApplication(_id) } className="btn-sm rounded-md  btn-error">Cancel</button>
                     </div>
                 </div>
